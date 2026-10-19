@@ -1,5 +1,4 @@
- HEAD
-# Respondr — Stage 1: Core Validation Engine
+# Respondr — API Response Validator
 
 Respondr is a framework-independent API Response Detector that helps developers identify invalid JSON, missing fields, data type mismatches, and unexpected API response structures.
 
@@ -131,7 +130,3 @@ To run in watch mode during development:
 ```bash
 npm run test:watch
 ```
-=======
-# Respondr
-Analyse the API and respond 
- 882ceae83cd7f4fd5cb42068aae4d3d2a991f0ec

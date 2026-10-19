@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #E4E3EC;
+  color: #191927;
+  min-height: 100vh;
+}
+
+textarea {
+  tab-size: 2;
+}
+
+/* Hide scrollbars cleanly while retaining scroll behavior */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

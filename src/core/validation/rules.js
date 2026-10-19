@@ -51,7 +51,13 @@ export function validateType(value, expectedType, path, options = {}) {
 
   const allowedTypes = Array.isArray(expectedType) ? expectedType : [expectedType];
 
-  if (!allowedTypes.includes(actualType)) {
+  const isMatch = allowedTypes.some((t) => {
+    if (t === actualType) return true;
+    if (t === 'integer' && actualType === 'number' && Number.isInteger(value)) return true;
+    return false;
+  });
+
+  if (!isMatch) {
     const expectedLabel = allowedTypes.join(' or ');
     return {
       isValid: false,
