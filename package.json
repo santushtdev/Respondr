@@ -1,0 +1,23 @@
+{
+  "name": "respondr",
+  "version": "1.0.0",
+  "description": "API Response Detector - Core Validation Engine",
+  "type": "module",
+  "main": "src/core/validation/index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "api",
+    "validation",
+    "json",
+    "schema",
+    "detector"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  }
+}

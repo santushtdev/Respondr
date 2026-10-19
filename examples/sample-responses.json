@@ -1,0 +1,76 @@
+{
+  "userSchema": {
+    "type": "object",
+    "required": ["id", "name", "email", "role"],
+    "allowUnexpectedFields": false,
+    "properties": {
+      "id": { "type": "number", "min": 1 },
+      "name": { "type": "string", "minLength": 2 },
+      "email": { "type": "string", "pattern": "^[^@]+@[^@]+\\.[^@]+$" },
+      "role": { "type": "string", "enum": ["admin", "editor", "viewer"] },
+      "isActive": { "type": "boolean" },
+      "deletedAt": { "type": "null", "nullable": true },
+      "profile": {
+        "type": "object",
+        "required": ["bio"],
+        "properties": {
+          "bio": { "type": "string" },
+          "website": { "type": "string" }
+        }
+      },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  },
+  "validResponse": {
+    "id": 101,
+    "name": "Jane Developer",
+    "email": "jane@example.com",
+    "role": "admin",
+    "isActive": true,
+    "deletedAt": null,
+    "profile": {
+      "bio": "Building resilient systems.",
+      "website": "https://example.com"
+    },
+    "tags": ["frontend", "nodejs", "vitest"]
+  },
+  "malformedJsonString": "{\n  \"id\": 101,\n  \"name\": \"Jane Developer\",\n  \"email\": \"jane@example.com\",\n",
+  "missingFieldsResponse": {
+    "id": 101,
+    "name": "Jane Developer"
+  },
+  "typeMismatchResponse": {
+    "id": "101",
+    "name": "Jane Developer",
+    "email": "jane@example.com",
+    "role": "admin",
+    "isActive": "yes"
+  },
+  "unexpectedFieldsResponse": {
+    "id": 101,
+    "name": "Jane Developer",
+    "email": "jane@example.com",
+    "role": "admin",
+    "isActive": true,
+    "internalDatabaseHash": "x89f_secret",
+    "trackingToken": "tr_991823"
+  },
+  "arrayErrorsResponse": {
+    "id": 101,
+    "name": "Jane Developer",
+    "email": "jane@example.com",
+    "role": "admin",
+    "tags": ["frontend", 42, true]
+  },
+  "multipleIssuesResponse": {
+    "id": -5,
+    "name": "J",
+    "email": "not-a-valid-email",
+    "role": "superadmin",
+    "isActive": "false",
+    "unknownField": "surprise"
+  }
+}
