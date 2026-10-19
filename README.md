@@ -1,10 +1,11 @@
+ HEAD
 # Respondr — Stage 1: Core Validation Engine
 
 Respondr is a framework-independent API Response Detector that helps developers identify invalid JSON, missing fields, data type mismatches, and unexpected API response structures.
 
 This repository contains **Stage 1: Core Validation Engine**, designed to be framework-agnostic, zero-runtime-dependency, and ready for future integration into Next.js API routes or client-side frontends.
 
----
+
 
 ## Architecture Overview
 
@@ -130,3 +131,7 @@ To run in watch mode during development:
 ```bash
 npm run test:watch
 ```
+=======
+# Respondr
+Analyse the API and respond 
+ 882ceae83cd7f4fd5cb42068aae4d3d2a991f0ec
