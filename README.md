@@ -1,132 +1,52 @@
-# Respondr — API Response Validator
+# Respondr
 
-Respondr is a framework-independent API Response Detector that helps developers identify invalid JSON, missing fields, data type mismatches, and unexpected API response structures.
+**A lightweight SDK for API response validation.**
 
-This repository contains **Stage 1: Core Validation Engine**, designed to be framework-agnostic, zero-runtime-dependency, and ready for future integration into Next.js API routes or client-side frontends.
+Respondr helps developers detect unexpected API responses by validating data against predefined schemas. It identifies parsing errors, missing fields, type mismatches, and structural inconsistencies with actionable terminal diagnostics.
 
+## Features
 
+- **Schema Validation** — Validate objects, arrays, and nested structures.
+- **Error Diagnostics** — Identify validation failures with precise field paths.
+- **Terminal Reporting** — Display readable validation results directly in the terminal.
+- **TypeScript Support** — Built-in type definitions.
+- **Zero Runtime Dependencies** — Lightweight and framework-independent.
 
-## Architecture Overview
-
-```
-respondr/
-├── src/
-│   └── core/
-│       └── validation/
-│           ├── parser.js      # Safe JSON parser & parsing syntax error diagnostics
-│           ├── rules.js       # Reusable atomic validation rules & type detectors
-│           ├── validator.js   # Recursive schema validator (objects, arrays, primitives)
-│           └── index.js       # Unified public API facade (validateApiResponse)
-├── tests/
-│   └── validation/
-│       ├── parser.test.js     # Parser unit tests
-│       └── validator.test.js  # Validator & integration unit tests
-├── examples/
-│   └── sample-responses.json  # Representative sample payloads and schemas
-├── package.json
-└── README.md
-```
-
-### Data Flow
-1. **Raw Input**: The consumer calls `validateApiResponse(rawJsonString, schema, options)`.
-2. **Parsing (`parser.js`)**:
-   - Guards against non-strings, `null`, `undefined`, or empty whitespace inputs.
-   - Parses the JSON string safely with `JSON.parse`.
-   - If parsing fails, execution halts early and returns a structured result with `stage: 'parse'`, `parsingError`, and error details.
-3. **Validation (`validator.js` & `rules.js`)**:
-   - If parsing succeeds, `validate(parsedData, schema, options)` is invoked.
-   - Recursively traverses properties and array elements.
-   - Checks presence for explicitly declared `required` fields.
-   - Evaluates type matches (`string`, `number`, `boolean`, `object`, `array`, `null`).
-   - Flags unexpected fields when configured (`allowUnexpectedFields: false` or `additionalProperties: false`).
-   - Asserts custom constraint rules (`enum` / `allowedValues`, `min`, `max`, `minLength`, `maxLength`, `pattern`, `minItems`, `maxItems`).
-4. **Structured Results**:
-   - Produces a consistent, predictable JavaScript object with overall validity, checks performed, issue count, and detailed issue descriptors.
-
----
-
-## Quick Start & Usage
+## Quick Start
 
 ```javascript
-import { validateApiResponse } from './src/core/validation/index.js';
+import { validate } from 'respondr';
+import { printReport } from 'respondr/reporter';
 
 const schema = {
   type: 'object',
-  required: ['id', 'name', 'email'],
-  allowUnexpectedFields: false,
+  required: ['id', 'name'],
   properties: {
-    id: { type: 'number', min: 1 },
-    name: { type: 'string', minLength: 2 },
-    email: { type: 'string' },
-    role: { type: 'string', enum: ['admin', 'viewer'] },
-    tags: {
-      type: 'array',
-      items: { type: 'string' }
-    }
+    id: { type: 'number' },
+    name: { type: 'string' }
   }
 };
 
-const jsonString = '{"id": 1, "name": "Jane", "email": "jane@example.com", "role": "admin", "tags": ["eng"]}';
+const response = { id: 1, name: 'Jane' };
+const result = validate(response, schema);
 
-const result = validateApiResponse(jsonString, schema);
-console.log(result);
+printReport(result, {
+  title: 'GET /api/users'
+});
 ```
 
-### Structured Output Shape
+Respondr accepts raw JSON strings and parsed JavaScript objects or arrays.
 
-```json
-{
-  "isValid": true,
-  "stage": "validation",
-  "checksPerformed": 6,
-  "issueCount": 0,
-  "parsingError": null,
-  "issues": []
-}
-```
-
-If issues are found:
-
-```json
-{
-  "isValid": false,
-  "stage": "validation",
-  "checksPerformed": 6,
-  "issueCount": 2,
-  "parsingError": null,
-  "issues": [
-    {
-      "code": "TYPE_MISMATCH",
-      "stage": "validation",
-      "path": "id",
-      "expected": "number",
-      "actual": "string",
-      "message": "Field 'id' expected type 'number', but received 'string'."
-    },
-    {
-      "code": "MISSING_REQUIRED_FIELD",
-      "stage": "validation",
-      "path": "email",
-      "expected": "defined",
-      "actual": "undefined",
-      "message": "Missing required field 'email'."
-    }
-  ]
-}
-```
-
----
-
-## Running the Tests
-
-To run the automated Vitest test suite:
+## Development
 
 ```bash
+git clone https://github.com/santushtdev/respondr.git
+cd respondr
+npm install
 npm test
 ```
 
-To run in watch mode during development:
+## Project Status
 
-```bash
-npm run test:watch
-```
+The validation engine, SDK interface, and terminal reporter are implemented. Application integrations, automatic response interception, and the web dashboard are planned.
+
