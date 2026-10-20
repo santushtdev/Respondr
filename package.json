@@ -3,7 +3,24 @@
   "version": "1.0.0",
   "description": "API Response Detector - Core Validation Engine",
   "type": "module",
-  "main": "src/core/validation/index.js",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./reporter": {
+      "types": "./src/reporter/index.d.ts",
+      "import": "./src/reporter/index.js",
+      "default": "./src/reporter/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
